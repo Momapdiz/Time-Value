@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><meta name="description" content="Time Value - biến thời gian trên điện thoại thành thời gian có giá trị">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icons/icon-192.png">
+<title>Time Value</title>
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--ink:#182230;--muted:#718096;--accent:#6558d3;--green:#17866b;--line:#e7eaf0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#111b2c,#343a69);color:white;padding:25px 18px 30px;border-radius:0 0 26px 26px}
+.wrap{max-width:760px;margin:auto}header .brand{font-size:13px;letter-spacing:2px;opacity:.8;font-weight:700}h1{margin:6px 0;font-size:30px}header p{margin:0;color:#d7dcf5}
+main{padding:16px;display:grid;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 5px 18px #16213a08}
+h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#f7f6ff;border-radius:14px;padding:14px}.stat strong{font-size:25px;display:block;color:var(--accent)}.stat span{font-size:12px;color:var(--muted)}
+label{display:block;font-size:13px;font-weight:650;margin:10px 0 5px}input,select,textarea{width:100%;padding:12px;border:1px solid #dfe3ed;border-radius:11px;font:inherit;background:#fff;color:var(--ink)}button{border:0;border-radius:12px;padding:12px 15px;font:inherit;font-weight:700;cursor:pointer;background:var(--accent);color:white}button.secondary{background:#eef0f7;color:#344055}button.green{background:var(--green)}.row{display:flex;gap:9px;align-items:center}.row>*{flex:1}.choices{display:flex;gap:8px;flex-wrap:wrap}.choices button{flex:1;min-width:65px}.timer{text-align:center;padding:12px}.timerNum{font-size:44px;font-weight:800;letter-spacing:1px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1}
+.progress{height:10px;background:#eceef5;border-radius:99px;overflow:hidden;margin:10px 0}.progress div{height:100%;background:linear-gradient(90deg,#6558d3,#20a58a);width:0}
+.entries{display:grid;gap:8px}.entry{padding:11px;border:1px solid var(--line);border-radius:12px;display:flex;justify-content:space-between;gap:10px}.entry b{display:block;font-size:14px}.entry small{color:var(--muted)}.entry button{padding:5px 9px;background:#f4e9ed;color:#a43c55}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:8px 20px 28px}.notice{background:#fff8e8;border:1px solid #f2dfad;padding:11px;border-radius:12px;font-size:12px;color:#785b19}
+@media(min-width:650px){main{grid-template-columns:1fr 1fr}.wide{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">TIME VALUE · PERSONAL TIME COACH</div><h1>Thời gian của bạn,<br>giá trị của bạn.</h1><p>Không cần bỏ điện thoại. Hãy dùng nó có chủ đích.</p></div></header>
+<main class="wrap">
+<section class="card wide"><h2>📊 Hôm nay</h2><div class="stats"><div class="stat"><strong id="todayValue">0 phút</strong><span>Thời gian có ích</span></div><div class="stat"><strong id="weekValue">0 phút</strong><span>7 ngày gần nhất</span></div></div><div class="muted" id="goalText">Mục tiêu mỗi ngày: 60 phút</div><div class="progress"><div id="progressBar"></div></div><div class="row"><label style="flex:2">Mục tiêu/ngày (phút)<input id="goal" type="number" min="5" max="600" value="60"></label><button id="saveGoal" style="align-self:end">Lưu mục tiêu</button></div></section>
+<section class="card"><h2>🎯 Trước khi lướt</h2><p class="muted">Chọn lý do và thời lượng để tránh lướt vô thức.</p><label>Mình định làm gì?</label><select id="purpose"><option>Học kỹ năng</option><option>Tìm việc / phát triển nghề</option><option>Làm một việc cần thiết</option><option>Giải trí có chủ đích</option><option>Nghỉ ngơi, thư giãn</option></select><label>Thời lượng</label><div class="choices"><button class="secondary" data-min="10">10 phút</button><button class="secondary" data-min="15">15 phút</button><button class="secondary" data-min="25">25 phút</button></div><div class="timer"><div class="timerNum" id="timer">15:00</div><div class="muted" id="timerStatus">Sẵn sàng bắt đầu</div></div><div class="actions"><button id="start">Bắt đầu</button><button class="secondary" id="pause">Tạm dừng</button><button class="green" id="finish">Ghi nhận phiên</button></div></section>
+<section class="card"><h2>✍️ Ghi nhận thời gian</h2><p class="muted">Bạn cũng có thể nhập thời gian có ích đã sử dụng.</p><label>Hoạt động</label><input id="activity" placeholder="Ví dụ: học Excel, xem bài sửa điện"><div class="row"><label>Phút<input id="minutes" type="number" min="1" max="1440" placeholder="30"></label><label>Nhóm<select id="category"><option>Học kỹ năng</option><option>Tìm việc</option><option>Công việc</option><option>Việc cá nhân</option><option>Nghỉ ngơi</option></select></label></div><button id="add" style="width:100%;margin-top:12px">+ Lưu hoạt động</button></section>
+<section class="card wide"><div class="row"><h2 style="margin:0;flex:2">🗓 Nhật ký gần đây</h2><button class="secondary" id="export">Xuất CSV</button></div><p class="muted">Dữ liệu chỉ lưu trên trình duyệt của thiết bị này.</p><div class="entries" id="entries"></div><p class="muted" id="empty">Chưa có hoạt động. Bắt đầu một phiên nhỏ nhé.</p><div class="actions" style="margin-top:12px"><button class="secondary" id="share">Chia sẻ Time Value</button><button class="secondary" id="clear">Xóa dữ liệu</button></div></section>
+<section class="card wide"><div class="notice">Bản MVP ghi nhận thủ công, không tự đọc Screen Time/Usage Stats. Khi chia sẻ app cho bạn bè, mỗi người sẽ có dữ liệu riêng trên máy của họ.</div></section>
+</main><footer>Time Value · MVP 1.0 · Dùng thời gian có chủ đích, không áp lực hoàn hảo.</footer>
+<script>
+const $=id=>document.getElementById(id);let records=JSON.parse(localStorage.getItem('tv_records')||'[]'),goal=+(localStorage.getItem('tv_goal')||60),chosen=15,remain=900,interval=null,running=false;
+$('goal').value=goal;
+function save(){localStorage.setItem('tv_records',JSON.stringify(records));render()}
+function dayKey(d=new Date()){return d.toLocaleDateString('sv-SE')}
+function render(){let today=dayKey(),week=new Date();week.setDate(week.getDate()-6);let start=dayKey(week);let t=records.filter(x=>x.date===today).reduce((a,x)=>a+x.minutes,0),w=records.filter(x=>x.date>=start).reduce((a,x)=>a+x.minutes,0);$('todayValue').textContent=t+' phút';$('weekValue').textContent=w+' phút';$('goalText').textContent=`Mục tiêu mỗi ngày: ${goal} phút · ${Math.min(100,Math.round(t/goal*100))}%`; $('progressBar').style.width=Math.min(100,t/goal*100)+'%';$('entries').innerHTML='';records.slice().reverse().slice(0,12).forEach((x,i)=>{let div=document.createElement('div');div.className='entry';div.innerHTML=`<div><b>${esc(x.activity)}</b><small>${x.date} · ${esc(x.category)}</small></div><div><b>${x.minutes} phút</b><button data-del="${records.length-1-i}">×</button></div>`;$('entries').appendChild(div)});$('empty').style.display=records.length?'none':'block';document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{records.splice(+b.dataset.del,1);save()})}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showTimer(){$('timer').textContent=String(Math.floor(remain/60)).padStart(2,'0')+':'+String(remain%60).padStart(2,'0')}
+document.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{if(running)return;chosen=+b.dataset.min;remain=chosen*60;showTimer();$('timerStatus').textContent='Đã chọn '+chosen+' phút'});
+$('start').onclick=()=>{if(running)return;running=true;$('timerStatus').textContent='Đang tập trung · '+$('purpose').value;interval=setInterval(()=>{remain--;showTimer();if(remain<=0){stop();$('timerStatus').textContent='Hết giờ! Bạn có thể ghi nhận phiên.'}},1000)};
+function stop(){running=false;clearInterval(interval);interval=null}
+$('pause').onclick=()=>{stop();$('timerStatus').textContent='Đã tạm dừng'};
+$('finish').onclick=()=>{stop();let spent=Math.max(1,Math.round((chosen*60-remain)/60));if(remain<=0)spent=chosen;if(spent<1)spent=chosen;records.push({date:dayKey(),activity:'Phiên có chủ đích: '+$('purpose').value,category:$('purpose').value,minutes:spent});save();remain=chosen*60;showTimer();$('timerStatus').textContent='Đã ghi nhận '+spent+' phút'};
+$('add').onclick=()=>{let a=$('activity').value.trim(),m=+$('minutes').value;if(!a||!m||m<1){alert('Nhập hoạt động và số phút hợp lệ nhé.');return}records.push({date:dayKey(),activity:a,category:$('category').value,minutes:Math.round(m)});$('activity').value='';$('minutes').value='';save()};
+$('saveGoal').onclick=()=>{goal=Math.max(5,Math.min(600,+$('goal').value||60));localStorage.setItem('tv_goal',goal);render()};
+$('export').onclick=()=>{let csv='date,activity,category,minutes\\n'+records.map(x=>[x.date,x.activity,x.category,x.minutes].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='time-value-data.csv';a.click();URL.revokeObjectURL(a.href)};
+$('share').onclick=async()=>{let text='Time Value — dùng thời gian trên điện thoại có chủ đích. Cài app từ đường link mình gửi nhé!';if(navigator.share){try{await navigator.share({title:'Time Value',text,url:location.href})}catch(e){}}else if(navigator.clipboard){await navigator.clipboard.writeText(text+' '+location.href);alert('Đã sao chép nội dung chia sẻ.')}else alert('Hãy sao chép đường link trên thanh địa chỉ để gửi bạn bè.')};
+$('clear').onclick=()=>{if(confirm('Xóa toàn bộ nhật ký trên thiết bị này?')){records=[];save()}};
+showTimer();render();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
